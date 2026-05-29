@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { notFound, redirect } from 'next/navigation'
-import { FileText, Mail, BookOpen, MessageSquare, Instagram, Video, GraduationCap, ArrowLeft } from 'lucide-react'
+import { FileText, Mail, BookOpen, MessageSquare, Camera, Video, GraduationCap, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { DownloadButton } from '@/components/DownloadButton'
 
@@ -39,7 +39,7 @@ export default async function AssetDetailPage({ params }: { params: { slug: stri
     email: { icon: Mail, color: 'text-yellow-500' },
     workbook: { icon: FileText, color: 'text-purple-500' },
     prompts: { icon: MessageSquare, color: 'text-green-500' },
-    social: { icon: Instagram, color: 'text-pink-500' },
+    social: { icon: Camera, color: 'text-pink-500' },
     reels: { icon: Video, color: 'text-red-500' },
     course: { icon: GraduationCap, color: 'text-indigo-500' },
   }
