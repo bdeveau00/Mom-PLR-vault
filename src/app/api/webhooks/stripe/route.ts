@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     }
 
     if (planType === 'monthly') {
-      const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any
       subscriptionData.current_period_start = new Date(subscription.current_period_start * 1000).toISOString()
       subscriptionData.current_period_end = new Date(subscription.current_period_end * 1000).toISOString()
     }
