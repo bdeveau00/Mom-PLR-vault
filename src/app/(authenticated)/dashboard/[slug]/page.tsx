@@ -80,7 +80,12 @@ export default async function AssetDetailPage({ params }: { params: { slug: stri
                   <p className="text-sm text-gray-500">{asset.file_type || 'PDF/DOCX'} • {asset.month ? `Month ${asset.month}` : 'Bonus'}</p>
                 </div>
               </div>
-              <DownloadButton assetId={asset.id} assetSlug={asset.slug} assetTitle={asset.title} />
+              <DownloadButton 
+                assetId={asset.id} 
+                assetSlug={asset.slug} 
+                assetTitle={asset.title} 
+                fileUrl={asset.file_url}
+              />
             </div>
           </div>
         </div>
