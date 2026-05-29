@@ -4,7 +4,17 @@ import { createClient } from '@/utils/supabase/client'
 import { Download } from 'lucide-react'
 import { useState } from 'react'
 
-export function DownloadButton({ assetId, assetSlug, assetTitle }: { assetId: string, assetSlug: string, assetTitle: string }) {
+export function DownloadButton({ 
+  assetId, 
+  assetSlug, 
+  assetTitle,
+  fileUrl
+}: { 
+  assetId: string, 
+  assetSlug: string, 
+  assetTitle: string,
+  fileUrl?: string
+}) {
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
 
@@ -21,12 +31,13 @@ export function DownloadButton({ assetId, assetSlug, assetTitle }: { assetId: st
       })
 
       // 2. Get signed URL
-      // We assume the file_path is stored in the file_url column or we derive it
-      // For now, let's assume file_url is the path in the bucket
+      // Use fileUrl from DB, fallback to slug-based name if missing
+      const filePath = fileUrl || `${assetSlug}.zip`
+      
       const { data, error } = await supabase
         .storage
         .from('plr-assets')
-        .createSignedUrl(assetSlug + '.zip', 60) // Assuming filename is slug + .zip
+        .createSignedUrl(filePath, 60)
 
       if (error) throw error
 
