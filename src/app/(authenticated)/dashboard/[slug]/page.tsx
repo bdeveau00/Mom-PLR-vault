@@ -1,7 +1,8 @@
 import { createClient } from '@/utils/supabase/server'
 import { notFound, redirect } from 'next/navigation'
-import { FileText, Mail, BookOpen, MessageSquare, Instagram, Video, GraduationCap, ArrowLeft, Download } from 'lucide-react'
+import { FileText, Mail, BookOpen, MessageSquare, Instagram, Video, GraduationCap, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import { DownloadButton } from '@/components/DownloadButton'
 
 export default async function AssetDetailPage({ params }: { params: { slug: string } }) {
   const { slug } = await params
@@ -79,14 +80,7 @@ export default async function AssetDetailPage({ params }: { params: { slug: stri
                   <p className="text-sm text-gray-500">{asset.file_type || 'PDF/DOCX'} • {asset.month ? `Month ${asset.month}` : 'Bonus'}</p>
                 </div>
               </div>
-              <a
-                href={asset.file_url}
-                download
-                className="inline-flex items-center justify-center py-2 px-6 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 transition-colors"
-              >
-                <Download className="mr-2 h-4 w-4" />
-                Download
-              </a>
+              <DownloadButton assetId={asset.id} assetSlug={asset.slug} assetTitle={asset.title} />
             </div>
           </div>
         </div>

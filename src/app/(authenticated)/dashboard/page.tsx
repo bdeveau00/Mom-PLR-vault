@@ -1,9 +1,14 @@
 import { createClient } from '@/utils/supabase/server'
-import { FileText, Mail, BookOpen, MessageSquare, Instagram, Video, GraduationCap, Download } from 'lucide-react'
+import { FileText, Mail, BookOpen, MessageSquare, Instagram, Video, GraduationCap, Download, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   const supabase = await createClient()
+  const { session_id } = await searchParams
   
   // Get content assets
   const { data: assets } = await supabase
@@ -34,6 +39,17 @@ export default async function DashboardPage() {
 
   return (
     <div className="px-4 py-8">
+      {session_id && (
+        <div className="bg-green-50 border-l-4 border-green-400 p-4 mb-8">
+          <div className="flex items-center">
+            <CheckCircle2 className="h-5 w-5 text-green-400 mr-3" />
+            <p className="text-sm text-green-700">
+              Payment successful! Welcome to the vault. Your access has been activated.
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Your Content Vault</h1>
       </div>
