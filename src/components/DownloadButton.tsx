@@ -1,7 +1,6 @@
 'use client'
 
-import { createClient } from '@/utils/supabase/client'
-import { Download } from 'lucide-react'
+import { Download, AlertCircle, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 
 export function DownloadButton({ 
@@ -16,50 +15,76 @@ export function DownloadButton({
   fileUrl?: string
 }) {
   const [loading, setLoading] = useState(false)
-  const supabase = createClient()
+  const [error, setError] = useState<string | null>(null)
 
   const handleDownload = async () => {
     setLoading(true)
+    setError(null)
+    
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error('Not authenticated')
-
-      // 1. Track download
-      await supabase.from('downloads').insert({
-        user_id: user.id,
-        asset_id: assetId
+      // 1. Call API route to get signed URL
+      // This also handles authentication check and download tracking
+      const response = await fetch('/api/download', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          assetId,
+          fileUrl: fileUrl || `${assetSlug}.md`
+        }),
       })
 
-      // 2. Get signed URL
-      // Use fileUrl from DB, fallback to slug-based name if missing
-      const filePath = fileUrl || `${assetSlug}.zip`
-      
-      const { data, error } = await supabase
-        .storage
-        .from('plr-assets')
-        .createSignedUrl(filePath, 60)
+      const data = await response.json()
 
-      if (error) throw error
-
-      if (data?.signedUrl) {
-        window.location.href = data.signedUrl
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to generate download link')
       }
-    } catch (error) {
-      console.error('Download failed:', error)
-      alert('Download failed. Please try again.')
+
+      if (data.signedUrl) {
+        // 2. Trigger download
+        const link = document.createElement('a')
+        link.href = data.signedUrl
+        link.style.display = 'none'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      } else {
+        throw new Error('No download URL returned')
+      }
+    } catch (err: any) {
+      console.error('Download error:', err)
+      setError(err.message || 'Download failed. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <button
-      onClick={handleDownload}
-      disabled={loading}
-      className="inline-flex items-center justify-center py-2 px-6 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 transition-colors disabled:opacity-50"
-    >
-      <Download className="mr-2 h-4 w-4" />
-      {loading ? 'Preparing...' : 'Download'}
-    </button>
+    <div className="flex flex-col items-end">
+      <button
+        onClick={handleDownload}
+        disabled={loading}
+        className="inline-flex items-center justify-center py-2 px-6 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 transition-colors disabled:opacity-50 shadow-sm"
+      >
+        {loading ? (
+          <>
+            <Loader2 className="animate-spin h-4 w-4 mr-2" />
+            Preparing...
+          </>
+        ) : (
+          <>
+            <Download className="mr-2 h-4 w-4" />
+            Download Now
+          </>
+        )}
+      </button>
+      {error && (
+        <p className="mt-2 text-xs text-red-600 flex items-center">
+          <AlertCircle className="h-3 w-3 mr-1" />
+          {error}
+        </p>
+      )}
+    </div>
   )
 }
