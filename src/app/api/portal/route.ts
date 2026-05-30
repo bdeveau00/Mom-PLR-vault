@@ -1,9 +1,10 @@
-import { stripe } from '@/utils/stripe/config'
+import { getStripe } from '@/utils/stripe/config'
 import { createClient } from '@/utils/supabase/server'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {
+    const stripe = getStripe()
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
