@@ -1,9 +1,14 @@
 import Stripe from 'stripe'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-05-27.dahlia' as any, // Use the latest API version
-  appInfo: {
-    name: 'MomIncome PLR Vault',
-    version: '0.1.0'
+let stripeClient: Stripe | null = null
+
+export function getStripe(): Stripe {
+  if (!stripeClient) {
+    const key = process.env.STRIPE_SECRET_KEY
+    if (!key) throw new Error('STRIPE_SECRET_KEY is not set')
+    stripeClient = new Stripe(key, {
+      appInfo: { name: 'MomIncome PLR Vault', version: '0.1.0' }
+    })
   }
-})
+  return stripeClient
+}
