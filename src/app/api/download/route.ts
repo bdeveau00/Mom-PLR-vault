@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {
-    const { assetId, fileUrl } = await request.json()
+    const { assetId, fileUrl, format = 'md' } = await request.json()
 
     if (!assetId || !fileUrl) {
       return NextResponse.json({ error: 'Asset ID and file URL are required' }, { status: 400 })
@@ -49,11 +49,17 @@ export async function POST(request: Request) {
       console.warn('Failed to track download:', trackError.message)
     }
 
-    // 5. Generate signed URL
+    // 5. Adjust file URL based on format
+    let targetFileUrl = fileUrl
+    if (format === 'pdf' && fileUrl.endsWith('.md')) {
+      targetFileUrl = fileUrl.replace('.md', '.pdf')
+    }
+
+    // 6. Generate signed URL
     const { data, error: urlError } = await supabaseAdmin
       .storage
       .from('plr-assets')
-      .createSignedUrl(fileUrl, 60)
+      .createSignedUrl(targetFileUrl, 60)
 
     if (urlError) {
       throw urlError
