@@ -1,6 +1,6 @@
 'use client'
 
-import { Download, AlertCircle, Loader2, FileText, File } from 'lucide-react'
+import { Download, AlertCircle, Loader2, FileText } from 'lucide-react'
 import { useState } from 'react'
 
 export function DownloadButton({ 
