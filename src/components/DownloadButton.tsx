@@ -81,14 +81,14 @@ export function DownloadButton({
         <button
           onClick={() => handleDownload('md')}
           disabled={!!loading}
-          className="inline-flex items-center justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 transition-colors disabled:opacity-50 shadow-sm"
+          className="inline-flex items-center justify-center py-2 px-6 border border-transparent text-sm font-bold rounded-xl text-white bg-brand-green hover:bg-brand-green-dark transition-all disabled:opacity-50 shadow-md shadow-brand-green/10"
         >
           {loading === 'md' ? (
             <Loader2 className="animate-spin h-4 w-4 mr-2" />
           ) : (
             <Download className="mr-2 h-4 w-4" />
           )}
-          {isMarkdown ? 'Markdown' : 'Download Now'}
+          {isMarkdown ? 'Editable Markdown' : 'Download Now'}
         </button>
       </div>
       

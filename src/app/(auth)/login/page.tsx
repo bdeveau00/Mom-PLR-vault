@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 
@@ -34,41 +35,52 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="text-center">
-        <h2 className="text-3xl font-extrabold text-gray-900">Welcome back</h2>
+      <div className="text-center flex flex-col items-center">
+        <Link href="/">
+          <Image 
+            src="/brand/logo.png" 
+            alt="Logo" 
+            width={150} 
+            height={45} 
+            className="mb-8 h-10 w-auto object-contain"
+          />
+        </Link>
+        <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Welcome back</h2>
         <p className="mt-2 text-sm text-gray-600">
-          Sign in to your account
+          Sign in to your member dashboard
         </p>
       </div>
       <form className="mt-8 space-y-6" onSubmit={handleLogin}>
         {error && (
-          <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm">
+          <div className="bg-red-50 text-red-500 p-3 rounded-xl text-sm border border-red-100">
             {error}
           </div>
         )}
-        <div className="rounded-md shadow-sm -space-y-px">
+        <div className="rounded-2xl space-y-3">
           <div>
+            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 ml-1">Email</label>
             <input
               id="email-address"
               name="email"
               type="email"
               autoComplete="email"
               required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-              placeholder="Email address"
+              className="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-lavender/50 focus:border-brand-lavender transition-all sm:text-sm"
+              placeholder="name@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>
+            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 ml-1">Password</label>
             <input
               id="password"
               name="password"
               type="password"
               autoComplete="current-password"
               required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-              placeholder="Password"
+              className="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-lavender/50 focus:border-brand-lavender transition-all sm:text-sm"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -79,14 +91,14 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50"
+            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-brand-green hover:bg-brand-green-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-green transition-all shadow-lg shadow-brand-green/20 disabled:opacity-50"
           >
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </div>
 
         <div className="text-sm text-center">
-          <Link href="/signup" className="font-medium text-pink-600 hover:text-pink-500">
+          <Link href="/signup" className="font-bold text-brand-lavender-dark hover:text-brand-lavender transition-colors">
             Don't have an account? Sign up
           </Link>
         </div>
