@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ec4899;
+            --soft-pink: #fdf2f8;
+            --text-dark: #111827;
+            --text-muted: #4b5563;
+            --border-color: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            padding: 2cm;
+            position: relative;
+            min-height: 25cm; /* Roughly A4 */
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-dark);
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        h1 { font-size: 2.5em; border-bottom: 2px solid var(--primary-pink); padding-bottom: 0.2em; }
+        h2 { font-size: 2em; color: var(--primary-pink); }
+        h3 { font-size: 1.5em; }
+
+        p { margin-bottom: 1em; }
+
+        strong { color: var(--text-dark); font-weight: 600; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5em 0;
+            font-size: 0.9em;
+        }
+
+        th {
+            background-color: var(--primary-pink);
+            color: white;
+            text-align: left;
+            padding: 10px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--soft-pink);
+        }
+
+        /* Checklists */
+        ul { padding-left: 1.5em; }
+        li { margin-bottom: 0.5em; }
+
+        /* Cover Page */
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            background-color: var(--soft-pink);
+            padding: 4cm 2cm;
+        }
+
+        .cover-title {
+            font-size: 3.5em;
+            margin-bottom: 0.2em;
+        }
+
+        .cover-subtitle {
+            font-size: 1.5em;
+            font-style: italic;
+            margin-bottom: 2em;
+            color: var(--primary-pink);
+        }
+
+        .cover-badge {
+            background-color: var(--primary-pink);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 99px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 3em;
+        }
+
+        .cover-author {
+            font-size: 1.2em;
+            color: var(--text-dark);
+            margin-top: 2em;
+        }
+
+        .logo-placeholder {
+            margin-bottom: 4em;
+            color: var(--primary-pink);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        /* Footer & Page Numbers */
+        #pageFooter {
+            font-size: 10px;
+            color: #999;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* Rebrand Placeholders */
+        .placeholder {
+            background-color: #fffbeb;
+            border: 1px dashed #f59e0b;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #b45309;
+            font-weight: 600;
+        }
+
+        /* Page Breaks */
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+    <div class="page cover-page page-break">
+        <div class="logo-placeholder">MomIncome PLR Vault</div>
+        <div class="cover-badge">PLR Edition — Rebrand & Sell</div>
+        <h1 class="cover-title">{{title}}</h1>
+        <p class="cover-subtitle">{{subtitle}}</p>
+        <div class="cover-author">By {{author}}</div>
+    </div>
+
+    <div class="page">
+        {{{content}}}
+    </div>
+</body>
+</html>

@@ -70,22 +70,44 @@ export default async function AssetDetailPage({ params }: { params: { slug: stri
           
           <div className="border-t pt-8">
             <h3 className="text-lg font-bold text-gray-900 mb-4">Download Assets</h3>
-            <div className="bg-gray-50 rounded-lg p-6 flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="bg-white p-3 rounded border">
-                  <FileText className="h-6 w-6 text-gray-400" />
+            <div className="bg-gray-50 rounded-lg p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="bg-white p-3 rounded border">
+                    <FileText className="h-6 w-6 text-gray-400" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{asset.title} (PDF)</p>
+                    <p className="text-sm text-gray-500">PDF Document • High Quality</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium text-gray-900">{asset.title}</p>
-                  <p className="text-sm text-gray-500">{asset.file_type || 'PDF/DOCX'} • {asset.month ? `Month ${asset.month}` : 'Bonus'}</p>
-                </div>
+                <DownloadButton 
+                  assetId={asset.id} 
+                  assetSlug={asset.slug} 
+                  assetTitle={asset.title} 
+                  fileUrl={asset.file_url_pdf || asset.file_url?.replace('month1/', 'month1-pdf/').replace('.md', '.pdf')}
+                  format="PDF"
+                />
               </div>
-              <DownloadButton 
-                assetId={asset.id} 
-                assetSlug={asset.slug} 
-                assetTitle={asset.title} 
-                fileUrl={asset.file_url}
-              />
+
+              <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="bg-white p-3 rounded border">
+                    <FileText className="h-6 w-6 text-gray-400" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{asset.title} (Editable)</p>
+                    <p className="text-sm text-gray-500">Markdown File • Best for rebranding</p>
+                  </div>
+                </div>
+                <DownloadButton 
+                  assetId={asset.id} 
+                  assetSlug={asset.slug} 
+                  assetTitle={asset.title} 
+                  fileUrl={asset.file_url}
+                  format="Markdown"
+                />
+              </div>
             </div>
           </div>
         </div>

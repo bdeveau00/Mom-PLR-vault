@@ -1,24 +1,31 @@
 'use client'
 
-import { Download, AlertCircle, Loader2, FileText, File } from 'lucide-react'
+import { Download, AlertCircle, Loader2, FileText } from 'lucide-react'
 import { useState } from 'react'
 
 export function DownloadButton({ 
   assetId, 
   assetSlug, 
   assetTitle,
-  fileUrl
+  fileUrl,
+  format = 'Markdown'
 }: { 
   assetId: string, 
   assetSlug: string, 
   assetTitle: string,
-  fileUrl?: string
+  fileUrl?: string,
+  format?: 'PDF' | 'Markdown'
 }) {
-  const [loading, setLoading] = useState<string | null>(null) // 'md' or 'pdf'
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const handleDownload = async (format: 'md' | 'pdf') => {
-    setLoading(format)
+  const handleDownload = async () => {
+    if (!fileUrl) {
+      setError('File URL missing')
+      return
+    }
+
+    setLoading(true)
     setError(null)
     
     try {
@@ -29,8 +36,9 @@ export function DownloadButton({
         },
         body: JSON.stringify({
           assetId,
-          fileUrl: fileUrl || `${assetSlug}.md`,
-          format
+          fileUrl,
+          // We pass the actual fileUrl from the prop, so /api/download doesn't need to 'format' it
+          format: format === 'PDF' ? 'pdf' : 'md'
         }),
       })
 
@@ -54,43 +62,32 @@ export function DownloadButton({
       console.error('Download error:', err)
       setError(err.message || 'Download failed. Please try again.')
     } finally {
-      setLoading(null)
+      setLoading(false)
     }
   }
 
-  const isMarkdown = fileUrl?.endsWith('.md') || !fileUrl?.includes('.')
+  const isPDF = format === 'PDF'
 
   return (
-    <div className="flex flex-col items-end space-y-2">
-      <div className="flex space-x-2">
-        {isMarkdown && (
-          <button
-            onClick={() => handleDownload('pdf')}
-            disabled={!!loading}
-            className="inline-flex items-center justify-center py-2 px-4 border border-pink-600 text-sm font-medium rounded-md text-pink-600 bg-white hover:bg-pink-50 transition-colors disabled:opacity-50 shadow-sm"
-          >
-            {loading === 'pdf' ? (
-              <Loader2 className="animate-spin h-4 w-4 mr-2" />
-            ) : (
-              <FileText className="mr-2 h-4 w-4" />
-            )}
-            PDF
-          </button>
+    <div className="flex flex-col items-end">
+      <button
+        onClick={handleDownload}
+        disabled={loading}
+        className={`inline-flex items-center justify-center py-2 px-4 border text-sm font-medium rounded-md transition-colors disabled:opacity-50 shadow-sm ${
+          isPDF 
+            ? 'border-pink-600 text-pink-600 bg-white hover:bg-pink-50' 
+            : 'border-transparent text-white bg-pink-600 hover:bg-pink-700'
+        }`}
+      >
+        {loading ? (
+          <Loader2 className="animate-spin h-4 w-4 mr-2" />
+        ) : isPDF ? (
+          <FileText className="mr-2 h-4 w-4" />
+        ) : (
+          <Download className="mr-2 h-4 w-4" />
         )}
-        
-        <button
-          onClick={() => handleDownload('md')}
-          disabled={!!loading}
-          className="inline-flex items-center justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 transition-colors disabled:opacity-50 shadow-sm"
-        >
-          {loading === 'md' ? (
-            <Loader2 className="animate-spin h-4 w-4 mr-2" />
-          ) : (
-            <Download className="mr-2 h-4 w-4" />
-          )}
-          {isMarkdown ? 'Markdown' : 'Download Now'}
-        </button>
-      </div>
+        Download {format}
+      </button>
       
       {error && (
         <p className="mt-2 text-xs text-red-600 flex items-center">
