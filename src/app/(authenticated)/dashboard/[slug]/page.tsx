@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { notFound, redirect } from 'next/navigation'
-import { FileText, Mail, BookOpen, MessageSquare, Camera, Video, GraduationCap, ArrowLeft, Download } from 'lucide-react'
+import { FileText, Mail, BookOpen, MessageSquare, Camera, Video, GraduationCap, ArrowLeft, Download, FileJson } from 'lucide-react'
 import Link from 'next/link'
 import { DownloadButton } from '@/components/DownloadButton'
 
@@ -82,30 +82,62 @@ export default async function AssetDetailPage({ params }: { params: { slug: stri
               Ready to Download
             </h3>
             
-            <div className="bg-brand-green-light/30 border border-brand-green/20 rounded-[2rem] p-8 flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="flex items-center space-x-6">
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-brand-green/10">
-                  <FileText className="h-10 w-10 text-brand-green/40" />
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-brand-dark mb-1">{asset.title}</p>
-                  <div className="flex items-center gap-3">
-                    <span className="px-3 py-1 rounded-full bg-brand-green/10 text-brand-green-dark text-xs font-bold uppercase">
-                      {asset.file_type || 'PDF/DOCX'}
-                    </span>
-                    <span className="text-sm font-bold text-gray-400">
-                      {asset.month ? `Month ${asset.month}` : 'Bonus Pack'}
-                    </span>
+            <div className="space-y-4">
+              {/* PDF Version */}
+              <div className="bg-brand-green-light/30 border border-brand-green/20 rounded-[2rem] p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="flex items-center space-x-6">
+                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-brand-green/10">
+                    <FileText className="h-8 w-8 text-pink-500" />
+                  </div>
+                  <div>
+                    <p className="text-lg font-bold text-brand-dark mb-1">{asset.title} (Professional PDF)</p>
+                    <div className="flex items-center gap-3">
+                      <span className="px-3 py-1 rounded-full bg-pink-50 text-pink-600 text-[10px] font-black uppercase tracking-wider">
+                        High Quality
+                      </span>
+                      <span className="text-sm font-bold text-gray-400">
+                        {asset.month ? `Month ${asset.month}` : 'Bonus Pack'}
+                      </span>
+                    </div>
                   </div>
                 </div>
+                
+                <DownloadButton 
+                  assetId={asset.id} 
+                  assetSlug={asset.slug} 
+                  assetTitle={asset.title} 
+                  fileUrl={asset.file_url_pdf || asset.file_url?.replace('month1/', 'month1-pdf/').replace('.md', '.pdf')}
+                  format="PDF"
+                />
               </div>
-              
-              <DownloadButton 
-                assetId={asset.id} 
-                assetSlug={asset.slug} 
-                assetTitle={asset.title} 
-                fileUrl={asset.file_url}
-              />
+
+              {/* Editable Version */}
+              <div className="bg-brand-lavender-light/30 border border-brand-lavender/20 rounded-[2rem] p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="flex items-center space-x-6">
+                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-brand-lavender/10">
+                    <FileJson className="h-8 w-8 text-brand-lavender-dark" />
+                  </div>
+                  <div>
+                    <p className="text-lg font-bold text-brand-dark mb-1">{asset.title} (Editable Markdown)</p>
+                    <div className="flex items-center gap-3">
+                      <span className="px-3 py-1 rounded-full bg-brand-lavender-light text-brand-lavender-dark text-[10px] font-black uppercase tracking-wider">
+                        Rebrandable
+                      </span>
+                      <span className="text-sm font-bold text-gray-400">
+                        Raw Text File
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                <DownloadButton 
+                  assetId={asset.id} 
+                  assetSlug={asset.slug} 
+                  assetTitle={asset.title} 
+                  fileUrl={asset.file_url}
+                  format="Markdown"
+                />
+              </div>
             </div>
           </div>
         </div>
