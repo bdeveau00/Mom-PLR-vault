@@ -37,7 +37,6 @@ export function DownloadButton({
         body: JSON.stringify({
           assetId,
           fileUrl,
-          // We pass the actual fileUrl from the prop, so /api/download doesn't need to 'format' it
           format: format === 'PDF' ? 'pdf' : 'md'
         }),
       })
@@ -73,24 +72,24 @@ export function DownloadButton({
       <button
         onClick={handleDownload}
         disabled={loading}
-        className={`inline-flex items-center justify-center py-2 px-4 border text-sm font-medium rounded-md transition-colors disabled:opacity-50 shadow-sm ${
+        className={`inline-flex items-center justify-center py-3 px-8 text-base font-bold rounded-2xl transition-all disabled:opacity-50 shadow-lg ${
           isPDF 
-            ? 'border-pink-600 text-pink-600 bg-white hover:bg-pink-50' 
-            : 'border-transparent text-white bg-pink-600 hover:bg-pink-700'
+            ? 'border-2 border-pink-600 text-pink-600 bg-white hover:bg-pink-50 shadow-pink-100' 
+            : 'border-transparent text-white bg-brand-green hover:bg-brand-green-dark shadow-brand-green/20'
         }`}
       >
         {loading ? (
-          <Loader2 className="animate-spin h-4 w-4 mr-2" />
+          <Loader2 className="animate-spin h-5 w-5 mr-2" />
         ) : isPDF ? (
-          <FileText className="mr-2 h-4 w-4" />
+          <FileText className="mr-2 h-5 w-5" />
         ) : (
-          <Download className="mr-2 h-4 w-4" />
+          <Download className="mr-2 h-5 w-5" />
         )}
         Download {format}
       </button>
       
       {error && (
-        <p className="mt-2 text-xs text-red-600 flex items-center">
+        <p className="mt-2 text-xs text-red-600 flex items-center bg-red-50 px-2 py-1 rounded">
           <AlertCircle className="h-3 w-3 mr-1" />
           {error}
         </p>
